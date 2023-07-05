@@ -5,13 +5,13 @@ namespace StudentTestProject
 {
     public class ConvertStudentsUnitTests
     {
-        private List<Student> ArrayOfStudents { get; set; }
+        private readonly List<Student> _listOfStudents;
 
-        private List<Student> ArrayOfConvertedStudents { get; set; }
+        private readonly List<Student> _listOfOfConvertedStudents;
 
         public ConvertStudentsUnitTests() 
         {
-            ArrayOfStudents = new List<Student>()
+            _listOfStudents = new List<Student>()
             {
                 new Student()
                 {
@@ -90,14 +90,14 @@ namespace StudentTestProject
                 },
             };
 
-            ArrayOfConvertedStudents = new StudentConverter()
-                .ConvertStudents(ArrayOfStudents); 
+            _listOfOfConvertedStudents = new StudentConverter()
+                .ConvertStudents(_listOfStudents); 
         }
 
         [Fact]
         public void ExceptionalYoungHighAciever()
         {
-            var data = ArrayOfConvertedStudents.Where(s => s.Exceptional);
+            var data = _listOfOfConvertedStudents.Where(s => s.Exceptional);
             var names = new[] { "S1", "S2", "S3" };
 
             Assert.Equal(names, data.Select(s => s.Name));
@@ -106,7 +106,7 @@ namespace StudentTestProject
         [Fact]
         public void HighAchiever()
         {
-            var data = ArrayOfConvertedStudents.Where(s => s.HonorRoll);
+            var data = _listOfOfConvertedStudents.Where(s => s.HonorRoll);
             var names = new[] { "S4", "S5", "S6" };
 
             Assert.Equal(names, data.Select(s => s.Name));
@@ -115,16 +115,17 @@ namespace StudentTestProject
         [Fact]
         public void PassedStudents()
         {
-            var data = ArrayOfConvertedStudents.Where(s => s.Passed);
+            var data = _listOfOfConvertedStudents.Where(s => s.Passed);
             var names = new[] { "S7", "S8", "S9"};
 
             Assert.Equal(names, data.Select(s => s.Name));
         }
 
+        // I think correct is set Passed = true for students with grades more than 90 too
         [Fact]
         public void FailedStudents()
         {
-            var data = ArrayOfConvertedStudents.Where(s => !s.Passed);
+            var data = _listOfOfConvertedStudents.Where(s => !s.Passed);
             var names = new[] { "S1", "S2", "S3", "S4", "S5", "S6", "S10", "S11", "S12" };
 
             Assert.Equal(names, data.Select(s => s.Name));
@@ -134,7 +135,7 @@ namespace StudentTestProject
         public void EmptyArray()
         {
             var data = new StudentConverter()
-                .ConvertStudents(new List<Student>());
+                .ConvertStudents(_listOfOfConvertedStudents.Take(0).ToList());
 
             Assert.Empty(data);
         }
